@@ -51,7 +51,7 @@ jobs:
           path: build  # Ensure this matches your build output folder
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: actions/deploy-pages@v4
         with:
           branch: gh-pages
           folder: build

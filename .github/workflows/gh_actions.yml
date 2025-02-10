@@ -3,31 +3,16 @@ name: Deploy React App to GitHub Pages
 on:
   push:
     branches:
-      - main  # Adjust if using a different branch
-
-      # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+      - main  # Change if using a different branch
 
 permissions:
-
   contents: read
-
   pages: write
-
   id-token: write
-
-# Allow one concurrent deployment
-
-concurrency:
-
-  group: 'pages'
-
-  cancel-in-progress: true
-
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -47,25 +32,21 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: react-build
-          path: build  # Ensure this matches your build output folder
+          name: build-artifact  # Ensure this name matches in the next step
+          path: build
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: github-pages
-          path: build  # Ensure this matches the previous upload path
+          name: build-artifact  # Same name as in upload step
+          path: build
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
-
-
-
-
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build

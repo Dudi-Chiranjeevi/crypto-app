@@ -6,7 +6,7 @@ on:
       - main  # Change if using a different branch
 
 permissions:
-  contents: read
+  contents: write  # ✅ Required for PAT to work
   pages: write
   id-token: write
 
@@ -39,7 +39,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository  # ✅ This fixes the error!
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Download build artifact
@@ -55,3 +55,4 @@ jobs:
           folder: build
           clean: true
           force: true
+          token: ${{ secrets.GH_TOKEN }}  # ✅ Use Personal Access Token

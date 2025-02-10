@@ -50,8 +50,22 @@ jobs:
           name: react-build
           path: build  # Ensure this matches your build output folder
 
+deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: build  # Ensure this matches the previous upload path
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-        with:
-          branch: gh-pages
-          folder: build
+
+
+
+

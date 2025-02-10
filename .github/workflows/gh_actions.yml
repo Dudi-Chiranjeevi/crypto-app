@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -32,17 +32,20 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifact  # Ensure this name matches in the next step
+          name: build-artifact
           path: build
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository  # ✅ This fixes the error!
+        uses: actions/checkout@v4
+
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-artifact  # Same name as in upload step
+          name: build-artifact
           path: build
 
       - name: Deploy to GitHub Pages
@@ -50,3 +53,5 @@ jobs:
         with:
           branch: gh-pages
           folder: build
+          clean: true
+          force: true
